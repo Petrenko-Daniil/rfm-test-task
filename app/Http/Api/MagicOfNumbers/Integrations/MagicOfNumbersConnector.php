@@ -30,6 +30,8 @@ class MagicOfNumbersConnector extends Connector
             $this->token = \Cache::remember('magicOfNumbersBearerToken', 60 * 60, function () {
                 return $this->getBearerToken();
             });
+        } else {
+            $this->token = $token;
         }
         $this->withTokenAuth($this->token, 'Bearer');
     }
@@ -44,7 +46,7 @@ class MagicOfNumbersConnector extends Connector
             });
             $this->withTokenAuth($this->token, 'Bearer');
         }
-        return str_contains($response->body(), 'Server Error');
+        return $response->status() !== 200;
     }
 
     /**
@@ -66,7 +68,7 @@ class MagicOfNumbersConnector extends Connector
 
     public function resolveBaseUrl(): string
     {
-        return 'https://app.magic-of-numbers.ru/api';
+        return config('apidata.magicofnumbers.baseUrl');
     }
 
     protected function defaultHeaders(): array

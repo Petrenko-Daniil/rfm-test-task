@@ -36,13 +36,16 @@ class ReportsRepository
         return $collection;
     }
 
+    /**
+     * @throws Exception
+     */
     public function addReport(array|Report $item): static
     {
         if ($item instanceof Report) {
             $this->items->add($item);
         } else {
             $this->items->add(
-                new Request($item)
+                new Report($item)
             );
         }
         return $this;

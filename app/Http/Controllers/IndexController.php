@@ -31,12 +31,11 @@ class IndexController extends Controller
         /** @var Report $rfmReport */
         $rfmReport = $reportsRepository->getReports()->where('name', 'get_segment_rfm')->first();
         if (!$rfmReport) {
-            throw new Exception('Remote endpoint has no get_segment_rfm report');
+            return response('Remote endpoint has no get_segment_rfm report', 404);
         }
         $rfmReport->setExpandedResults(
             $api->getReportExpandedData($rfmReport->id)
         );
-
 
         $rfmReport->prepareForView();
 
